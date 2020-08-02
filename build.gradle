@@ -2,9 +2,10 @@ plugins {
     id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'groovy'
 }
 
-defaultTasks('clean', 'build')
+defaultTasks('clean', 'test')
 
 group = 'com.arun'
 version = '0.0.1-SNAPSHOT'
@@ -34,9 +35,18 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'io.projectreactor:reactor-test'
+    //testImplementation 'io.projectreactor:reactor-test'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
+
+    //Spock configuration
+    testCompile "org.spockframework:spock-core:${spookVersion}"
+    testCompile "org.spockframework:spock-spring:${spookVersion}"
 }
 
-test {
-    useJUnitPlatform()
+sourceSets {
+    test {
+        groovy {
+            srcDirs = ['src/test/java/com/arun/restservicewithwebclient/groovy']
+        }
+    }
 }

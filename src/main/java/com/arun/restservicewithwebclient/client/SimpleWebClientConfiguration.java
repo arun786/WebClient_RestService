@@ -26,16 +26,15 @@ public class SimpleWebClientConfiguration {
      * 2. read time out of 2 s
      * 3. write time our of 2 s
      *
-     * @param webClientBuilder builds a webclient based on the configuration
      * @return a webclient
      */
     @Bean
-    public WebClient webClient(WebClient.Builder webClientBuilder) {
+    public WebClient webClient() {
         TcpClient tcpClient = TcpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
                 .doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(2))
                         .addHandlerLast(new WriteTimeoutHandler(2)));
 
-        return webClientBuilder.clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient))).build();
+        return WebClient.builder().clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient))).build();
     }
 }

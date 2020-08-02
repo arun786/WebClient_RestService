@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "client.url.schema",
+      "type": "java.lang.String",
+      "description": "Description for client.url.schema."
+    },
+    {
+      "name": "client.url.hostname",
+      "type": "java.lang.String",
+      "description": "Description for client.url.hostname."
+    },
+    {
+      "name": "client.url.port",
+      "type": "java.lang.String",
+      "description": "Description for client.url.port."
+    }
+  ]
+}

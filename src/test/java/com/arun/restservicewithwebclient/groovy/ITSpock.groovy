@@ -29,4 +29,13 @@ class ITSpock extends Specification {
         then:
         status == "UP"
     }
+
+    def "Get the List of Profiles from MockService"() {
+        def profiles = webclientForMockService.allProfilesFromMockService
+        when: "Call to all profiles"
+        then:
+        profiles.statusCode.value() == 200
+        and:
+        profiles.body.size() > 0
+    }
 }

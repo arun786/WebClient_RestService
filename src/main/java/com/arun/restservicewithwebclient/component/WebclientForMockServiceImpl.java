@@ -1,12 +1,12 @@
 package com.arun.restservicewithwebclient.component;
 
 import com.arun.restservicewithwebclient.config.ClientApiProperties;
+import com.arun.restservicewithwebclient.model.Profile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,6 +25,7 @@ public class WebclientForMockServiceImpl implements WebclientForMockService {
     private final WebClient webClient;
     private final ClientApiProperties clientApiProperties;
     private final String ACTUATOR_PATH = "/actuator/health";
+    private final String GET_PATH = "/v1/profiles";
 
     @Autowired
     public WebclientForMockServiceImpl(WebClient webClient, ClientApiProperties clientApiProperties) {
@@ -60,7 +61,15 @@ public class WebclientForMockServiceImpl implements WebclientForMockService {
     }
 
     @Override
-    public ResponseEntity<List<Profile>> getAllProfilesFromMockService(int page, int size) {
-        return null;
+    public ResponseEntity<List<Profile>> getAllProfilesFromMockService() {
+        Mono<ResponseEntity<List<Profile>>> responseEntityMono = webClient.get().uri(uriBuilder ->
+                uriBuilder
+                        .scheme(clientApiProperties.getSchema())
+                        .host(clientApiProperties.getHostname())
+                        .port(clientApiProperties.getPort())
+                        .path(GET_PATH)
+                        .build()).retrieve()
+                .toEntityList(Profile.class);
+        return responseEntityMono.blockOptional().orElseThrow();
     }
 }

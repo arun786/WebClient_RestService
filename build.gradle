@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'groovy'
+    id 'jacoco'
 }
 
 defaultTasks('clean', 'test')
@@ -35,7 +36,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    //testImplementation 'io.projectreactor:reactor-test'
+
     testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
 
     //Spock configuration
@@ -49,4 +50,19 @@ sourceSets {
             srcDirs = ['src/test/java/com/arun/restservicewithwebclient/groovy']
         }
     }
+}
+
+
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
 }

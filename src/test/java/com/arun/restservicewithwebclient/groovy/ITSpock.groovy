@@ -38,4 +38,5 @@ class ITSpock extends Specification {
         and:
         profiles.body.size() > 0
     }
+
 }
